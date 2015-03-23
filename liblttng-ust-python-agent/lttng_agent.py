@@ -125,7 +125,7 @@ class LTTngLoggingHandler(logging.Handler):
 
         # ctypes lib for lttng-ust
         try:
-            self.lttng_ust = ctypes.cdll.LoadLibrary("LIBDIR_STR/liblttng-ust-python-agent.so")
+            self.lttng_ust = ctypes.cdll.LoadLibrary("liblttng-ust-python-agent.so")
         except OSError as e:
             print("Unable to find libust for Python.")
 
