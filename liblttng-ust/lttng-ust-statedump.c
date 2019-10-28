@@ -36,6 +36,7 @@
 #include "jhash.h"
 #include "getenv.h"
 #include "compat.h"
+#include "lttng-tls-procname.h"
 
 #define TRACEPOINT_DEFINE
 #include "ust_lib.h"				/* Only define. */
@@ -604,12 +605,10 @@ int do_baddr_statedump(void *owner)
 static
 int do_procname_statedump(void *owner)
 {
-	char procname[LTTNG_UST_PROCNAME_LEN];
 	if (lttng_getenv("LTTNG_UST_WITHOUT_PROCNAME_STATEDUMP"))
 		return 0;
 
-	lttng_ust_getprocname(procname);
-	trace_statedump_event(procname_cb, owner, procname);
+	trace_statedump_event(procname_cb, owner, lttng_tls_procname_get());
 	return 0;
 }
 

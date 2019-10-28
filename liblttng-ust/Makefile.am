@@ -59,6 +59,8 @@ liblttng_ust_runtime_la_SOURCES = \
 	lttng-ust-statedump.c \
 	lttng-ust-statedump.h \
 	lttng-ust-statedump-provider.h \
+	lttng-tls-procname.h \
+	lttng-tls-procname.c \
 	ust_lib.c \
 	ust_lib.h \
 	tracepoint-internal.h \

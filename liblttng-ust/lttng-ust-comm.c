@@ -59,6 +59,7 @@
 #include "clock.h"
 #include "../libringbuffer/getcpu.h"
 #include "getenv.h"
+#include "lttng-tls-procname.h"
 
 /* Concatenate lttng ust shared library name with its major version number. */
 #define LTTNG_UST_LIB_SO_NAME "liblttng-ust.so." __ust_stringify(CONFIG_LTTNG_UST_LIBRARY_VERSION_MAJOR)
@@ -1460,8 +1461,14 @@ void *ust_listener_thread(void *arg)
 	struct sock_info *sock_info = arg;
 	int sock, ret, prev_connect_failed = 0, has_waited = 0, fd;
 	long timeout;
+	char *procname;
 
 	lttng_ust_fixup_tls();
+
+	/* Get the procname and populate the TLS with the initial procname */
+	procname = lttng_tls_procname_get();
+	DBG("Spawning %s ust listener thread for %s process", sock_info->name, procname);
+
 	/*
 	 * If available, add '-ust' to the end of this thread's
 	 * process name
@@ -1470,6 +1477,7 @@ void *ust_listener_thread(void *arg)
 	if (ret) {
 		ERR("Unable to set UST process name");
 	}
+
 
 	/* Restart trying to connect to the session daemon */
 restart:
