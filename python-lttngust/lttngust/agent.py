@@ -21,6 +21,7 @@ from __future__ import print_function
 from __future__ import division
 import lttngust.debug as dbg
 import lttngust.loghandler
+import lttngust.compat
 import lttngust.cmd
 from io import open
 import threading
@@ -37,7 +38,6 @@ try:
 except ImportError:
     # Python 3
     import queue
-
 
 _PROTO_DOMAIN = 5
 _PROTO_MAJOR = 2
@@ -368,9 +368,9 @@ def _init_threads():
         try:
             dbg._pdebug('waiting for registration done (expecting {}, timeout is {} s)'.format(reg_expecting,
                                                                                                cur_timeout))
-            t1 = time.clock()
+            t1 = lttngust.compat._clock()
             reg_queue.get(timeout=cur_timeout)
-            t2 = time.clock()
+            t2 = lttngust.compat._clock()
             reg_expecting -= 1
             dbg._pdebug('unblocked')
 
